@@ -5,7 +5,7 @@ const AfterSignInUrl= import.meta.env.VITE_PUBLIC_AFTER_SIGN_IN_URL
 </script>
 
 <template>
-  <SignIn 
+  <SignIn
     :afterSignUpUrl="AfterSignUpUrl" 
     :afterSignInUrl="AfterSignInUrl"
   />

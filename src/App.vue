@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { ClerkLoaded } from 'vue-clerk'
+import TheTheme from './components/TheTheme.vue';
+
+import UseTheme from '@/components/UseTheme.vue'
 </script>
 
 <template>
-  <ClerkLoaded>
-    <RouterView />
+  <ClerkLoaded >
+    <UseTheme>
+      <TheTheme />
+      <RouterView />
+    </UseTheme>
   </ClerkLoaded>
 </template>
 

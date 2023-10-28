@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useMiddleware } from '@/composables/middlewares'
 import { useAuth } from 'vue-clerk'
-const { isSignedIn } = useAuth()
 // 守護路由
+
+const { isSignedIn } = useAuth()
 useMiddleware(isSignedIn.value)
 </script>
 
