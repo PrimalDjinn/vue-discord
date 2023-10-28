@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import { buttonVariants } from '.'
 import { cn } from '@/lib/utils'
@@ -9,15 +10,12 @@ interface Props {
 }
 
 withDefaults(defineProps<Props>(), {
-  as: 'button',
+  as: 'button'
 })
 </script>
 
 <template>
-  <component
-    :is="as"
-    :class="cn(buttonVariants({ variant, size }), $attrs.class ?? '')"
-  >
+  <component :is="as" :class="cn(buttonVariants({ variant, size }), $attrs.class ?? '')">
     <slot />
   </component>
 </template>

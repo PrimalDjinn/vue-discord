@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ClerkLoaded } from 'vue-clerk'
-import TheTheme from './components/TheTheme.vue';
+import TheTheme from './components/TheTheme.vue'
 
 import UseTheme from '@/components/UseTheme.vue'
 </script>
 
 <template>
-  <ClerkLoaded >
+  <ClerkLoaded>
     <UseTheme>
       <TheTheme />
       <RouterView />
@@ -14,5 +14,4 @@ import UseTheme from '@/components/UseTheme.vue'
   </ClerkLoaded>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

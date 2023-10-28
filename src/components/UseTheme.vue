@@ -7,7 +7,7 @@ const { mode, theme } = storeToRefs(useThemeStore())
 </script>
 
 <template>
-    <div>
-        <slot :mode="mode" :theme="theme" :toggle="toggleMode" :change="changeTheme"></slot>
-    </div>
+  <div>
+    <slot :mode="mode" :theme="theme" :toggle="toggleMode" :change="changeTheme"></slot>
+  </div>
 </template>

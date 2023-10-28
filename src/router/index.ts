@@ -26,7 +26,7 @@ const router = createRouter({
     // 守護路由
     {
       path: '/',
-      redirect: { path: "/home" },
+      redirect: { path: '/home' },
       component: MainLayout,
       children: [
         {
@@ -45,7 +45,7 @@ const router = createRouter({
           component: () => import('@/views/main/AboutView.vue')
         }
       ]
-    },
+    }
   ]
 })
 
