@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ClerkLoaded } from 'vue-clerk'
-import TheTheme from './components/TheTheme.vue'
-
-import UseTheme from '@/components/UseTheme.vue'
+import TheTheme from './components/theme/TheTheme.vue'
+import UseTheme from '@/components/theme/UseTheme.vue'
 </script>
 
 <template>

@@ -10,8 +10,10 @@ export const useThemeStore = defineStore(
     // 判斷系統 mode
     const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
     if (mode.value === '') {
-      if (prefersDarkMode) mode.value = 'dark'
-      else mode.value = 'light'
+      if (prefersDarkMode) {
+        mode.value = 'dark'
+        document.querySelector('body')?.classList.add(mode.value)
+      } else mode.value = 'light'
     }
 
     // 切換亮暗模式
@@ -26,6 +28,8 @@ export const useThemeStore = defineStore(
 
     // 監聽值的變化，然後更新 class
     watch(mode, (newVal, oldVal) => {
+      console.log(newVal, oldVal)
+
       const body = document.querySelector('body')
       body?.classList.remove(oldVal)
       body?.classList.add(newVal)

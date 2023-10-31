@@ -4,6 +4,7 @@ import { useThemeStore } from '@/stores/theme'
 
 const { toggleMode, changeTheme } = useThemeStore()
 const { mode, theme } = storeToRefs(useThemeStore())
+console.log(mode)
 </script>
 
 <template>

@@ -1,8 +1,8 @@
 import { get, post, type ApiResult } from '@/service/api'
 
 export type Profile = {
-  id?: number
-  userId?: number
+  id?: string
+  userId?: string
   name?: string | null
   imageUrl?: string
   email?: string
@@ -10,7 +10,7 @@ export type Profile = {
 
 // 獲取唯一使用者
 export async function getUnique(params?: {
-  userId: number
+  userId: string | undefined
 }): Promise<ApiResult<Profile> | undefined> {
   const response: ApiResult<Profile> = await get('/api/profile', params)
   return response

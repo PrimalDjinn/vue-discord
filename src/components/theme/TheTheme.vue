@@ -14,6 +14,7 @@ interface colorMap {
 }
 const color: colorMap = {
   'theme-default': 'bg-default',
+  'theme-zinc': 'bg-zinc',
   'theme-green': 'bg-green',
   'theme-red': 'bg-red',
   'theme-blue': 'bg-blue',
@@ -37,6 +38,7 @@ const modeList: modeListTypeItems = [
 interface themeListTypeItems extends Array<string> {}
 const themeList: themeListTypeItems = [
   'Default',
+  'Zinc',
   'Green',
   'Red',
   'Blue',
@@ -105,6 +107,9 @@ const themeList: themeListTypeItems = [
 
 <style scoped>
 .bg-default {
+  background-color: rgb(99, 102, 241);
+}
+.bg-zinc {
   background-color: rgb(28, 25, 23);
 }
 .bg-green {
