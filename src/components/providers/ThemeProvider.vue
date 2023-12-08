@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useThemeStore } from '@/stores/theme'
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 
 const { toggleMode, changeTheme, changeBarColor } = useThemeStore()
 const { mode, theme } = storeToRefs(useThemeStore())

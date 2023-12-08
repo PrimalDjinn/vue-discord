@@ -5,13 +5,6 @@ import type { Member } from '@/service/member'
 import type { Channel } from '@/service/channel'
 import { openDB, type DBSchema } from 'idb'
 
-type ChannelToggle = {
-  id?: string
-  toggle: boolean
-  index: number
-  serverId: string
-}
-
 export const useServerStore = defineStore(
   'server',
   () => {
@@ -144,24 +137,6 @@ export const useServerStore = defineStore(
       return temp
     }
 
-    const getChannelToggle = async (serverId: string): Promise<Array<ChannelToggle>> => {
-      return await serverDB.getAllFromIndex('channelToggle', 'by-serverId', serverId)
-    }
-
-    const setChannelToggle = async (data: Array<ChannelToggle>): Promise<void> => {
-      const tx = serverDB.transaction('channelToggle', 'readwrite')
-      const asyncList = (data: Array<ChannelToggle>) =>
-        data.map((item) => {
-          tx.store.put({
-            id: item.serverId + item.index,
-            toggle: item.toggle,
-            index: item.index,
-            serverId: item.serverId
-          })
-        })
-      await Promise.all([...asyncList(data), tx.done])
-    }
-
     const clearServerCache = (): void => {
       servers.value = []
       server.value = {}
@@ -170,8 +145,6 @@ export const useServerStore = defineStore(
     }
 
     return {
-      getChannelToggle,
-      setChannelToggle,
       clearServerCache,
       handleServers,
       getServers,
@@ -222,16 +195,6 @@ interface ServerDB extends DBSchema {
       serverId: string
     }
   }
-  channelToggle: {
-    key: string
-    indexes: { 'by-serverId': string }
-    value: {
-      id: string
-      toggle: boolean
-      index: number
-      serverId: string
-    }
-  }
 }
 
 export const serverDB = await openDB<ServerDB>('ServerData', 1, {
@@ -239,13 +202,8 @@ export const serverDB = await openDB<ServerDB>('ServerData', 1, {
     const serversStore = db.createObjectStore('servers', { keyPath: 'id', autoIncrement: false })
     const membersStore = db.createObjectStore('members', { keyPath: 'id', autoIncrement: false })
     const channelsStore = db.createObjectStore('channels', { keyPath: 'id', autoIncrement: false })
-    const channelToggleStore = db.createObjectStore('channelToggle', {
-      keyPath: 'id',
-      autoIncrement: false
-    })
     serversStore.createIndex('by-profileId', 'profileId')
     membersStore.createIndex('by-serverId', 'serverId')
     channelsStore.createIndex('by-serverId', 'serverId')
-    channelToggleStore.createIndex('by-serverId', 'serverId')
   }
 })

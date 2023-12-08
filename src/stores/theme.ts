@@ -11,10 +11,10 @@ export const useThemeStore = defineStore(
     const mode = ref('')
 
     const changeBarColor = () => {
-      if(mode.value === 'light') {
-        document?.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#fff');
+      if (mode.value === 'light') {
+        document?.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#fff')
       } else {
-        document?.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#313338');
+        document?.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#313338')
       }
     }
 
@@ -25,10 +25,9 @@ export const useThemeStore = defineStore(
         mode.value = 'dark'
         body?.classList.add(mode.value)
       } else {
-        mode.value  = 'light'
+        mode.value = 'light'
       }
     }
-
 
     // 切換亮暗模式
     const toggleMode = (_mode: undefined | string): void => {
@@ -38,7 +37,7 @@ export const useThemeStore = defineStore(
         if (mode.value === 'light') mode.value = 'dark'
         else {
           mode.value = 'light'
-          document?.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#fff');
+          document?.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#fff')
         }
       }
       changeBarColor()

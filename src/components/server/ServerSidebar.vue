@@ -9,11 +9,13 @@ import { Separator } from '@/components/ui/separator'
 
 import { computed, ref, watch, onMounted } from 'vue'
 import { useServerStore } from '@/stores/server'
+import { useChannelToggleStore } from '@/stores/cache/channel-toggle'
 import { currentProfile } from '@/lib/current-profile'
 import type { Server } from '@/service/server'
 import type { Channel } from '@/service/channel'
 import type { Member } from '@/service/member'
-const { getServer, getMembers, getChannels, getChannelToggle, setChannelToggle } = useServerStore()
+const { getServer, getMembers, getChannels } = useServerStore()
+const { getChannelToggle, setChannelToggle } = useChannelToggleStore()
 
 interface ServerSectionProps {
   serverId: string
