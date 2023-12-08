@@ -1,34 +1,38 @@
-import { useUser } from 'vue-clerk'
+import { useUser, useSession } from 'vue-clerk'
 import { useRouter } from 'vue-router'
-import { getUnique, create, type Profile } from '@/service/profile'
-import type { ApiResult } from '@/service/api'
+import { getUniqueOrCreate } from '@/service/profile'
+import { useAuthStore } from '@/stores/auth'
 
 export const initialProfile = async () => {
-  const { user } = useUser()
+  const { token, profile, handleLogin, handleLogout } = useAuthStore()
+  if (token !== '' && !!profile) return profile
 
-  if (!user.value) {
-    const router = useRouter()
+  const router = useRouter()
+  try {
+    const { user } = useUser()
+    // clerk 沒有 session 代表尚未登入
+    if (!user.value) throw new Error('User did not login.')
+
+    // 如果有已經是使用者，直接返回 Profile，沒有就新增一個
+    const { session } = useSession()
+    const token = (await session.value?.getToken()) ?? ''
+    const res = await getUniqueOrCreate({ token: token })
+    if (res?.code === 0) {
+      handleLogin(
+        {
+          id: res.data.id,
+          userId: user.value?.id,
+          name: user.value.lastName + '' + user.value.firstName,
+          imageUrl: user.value.imageUrl,
+          email: user.value.emailAddresses[0]?.emailAddress
+        },
+        res.data.token ?? ''
+      )
+      return res.data
+    }
+  } catch (error) {
+    console.error(error)
+    handleLogout()
     router.push(import.meta.env.VITE_PUBLIC_SIGN_IN_URL)
-  }
-
-  // 如果有已經是使用者，直接返回 Profile
-  try {
-    const res1: ApiResult<Profile> | undefined = await getUnique({ userId: user.value?.id })
-    if (res1?.data) return res1.data
-  } catch (error) {
-    console.error(error)
-  }
-
-  // 如果不是使用者，那就要新增
-  try {
-    const res2: ApiResult<Profile> | undefined = await create({
-      userId: user.value?.id,
-      name: user.value?.fullName,
-      imageUrl: user.value?.imageUrl,
-      email: user.value?.emailAddresses[0].emailAddress
-    })
-    if (res2?.data) return res2.data
-  } catch (error) {
-    console.error(error)
   }
 }

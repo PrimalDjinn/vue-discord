@@ -1,23 +1,22 @@
-import { get, post, type ApiResult } from '@/service/api'
+import { post, type ApiResult } from '@/service/api'
 
+// Profile 基本結構
 export type Profile = {
   id?: string
   userId?: string
   name?: string | null
   imageUrl?: string
-  email?: string
+  email?: string | null
 }
 
-// 獲取唯一使用者
-export async function getUnique(params?: {
-  userId: string | undefined
-}): Promise<ApiResult<Profile> | undefined> {
-  const response: ApiResult<Profile> = await get('/api/profile', params)
-  return response
-}
+// 登入使用
+export type Token = { token?: string | null }
+export type ProfileWithToken = Profile & Token
 
-// 建立使用者
-export async function create(data?: Profile): Promise<ApiResult<Profile> | undefined> {
-  const response: ApiResult<Profile> = await post('/api/profile', data)
+// 獲取唯一使用者，沒有就建立一個
+export async function getUniqueOrCreate(
+  params: Token
+): Promise<ApiResult<ProfileWithToken> | undefined> {
+  const response: ApiResult<Profile> = await post('/api/v1/login', params)
   return response
 }

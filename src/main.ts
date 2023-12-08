@@ -8,6 +8,14 @@ import { clerkPlugin } from 'vue-clerk'
 import App from './App.vue'
 import router from './router'
 
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
+  onOfflineReady() {
+    console.log('Go Offline!')
+  }
+})
+
 const app = createApp(App)
 
 const pinia = createPinia()

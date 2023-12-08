@@ -2,6 +2,7 @@
 import ImageUpload from '@/components/ImageUpload.vue'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
+import * as server from '@/service/server'
 import { useForm } from 'vee-validate'
 import {
   Dialog,
@@ -11,15 +12,20 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '../ui/input'
 import { Button } from '@/components/ui/button'
+import { inject } from 'vue'
+
+interface Props {
+  open?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  open: false
+})
+
+const refresh: any = inject('reload')
 
 // 定義表單規則
 const formSchema = toTypedSchema(
@@ -45,8 +51,16 @@ const form = useForm({
 
 // 提交後端
 const isLoading = form.isSubmitting
-const onSubmit = form.handleSubmit((values) => {
-  console.log('Form submitted!', values)
+const onSubmit = form.handleSubmit(async (values) => {
+  try {
+    const res = await server.create(values)
+    if (res?.code === 0) {
+      form.resetForm()
+      refresh()
+    }
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 // 獲取圖片地址
@@ -59,7 +73,7 @@ const handleChange = (value: string) => {
 </script>
 
 <template>
-  <Dialog open>
+  <Dialog :open="props.open">
     <DialogContent class="p-0 overflow-hidden">
       <DialogHeader class="pt-8 px-6">
         <DialogTitle class="text-zinc text-center text-2xl font-bold">
