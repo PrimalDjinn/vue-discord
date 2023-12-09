@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import ActionTooltip from '@/components/ActionTooltip.vue'
+import UserAvatar from '../UserAvatar.vue'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
 import { cn } from '@/lib/utils'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -36,16 +40,16 @@ const handleClick = (serverId: string) => {
           )
         "
       />
-      <div
+      <UserAvatar
         :class="
           cn(
-            'relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden',
+            'relative group flex mx-3 h-[48px] w-[48px] md:h-[48px] md:w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden',
             route.params?.serverId === props.id && 'bg-primary/10 text-primary rounded-[16px]'
           )
         "
-      >
-        <img :src="props.imageUrl" :alt="props.name" />
-      </div>
+        :src="props.imageUrl"
+        :alt="props.name.slice(0, 8)"
+      />
     </button>
   </ActionTooltip>
 </template>
