@@ -23,16 +23,16 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '../ui/input'
 import { Button } from '@/components/ui/button'
 import { useModal } from '@/stores/modal'
-import { computed, inject, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useServerStore } from '@/stores/server'
+import { useReloadStore } from '@/stores/reload'
 
 const { isOpen, type, data } = storeToRefs(useModal())
 const { onClose } = useModal()
 
 const { handleChannels } = useServerStore()
-
-const refresh: any = inject('reloadServerSidebar')
+const { reloadSidebar } = useReloadStore()
 
 const isModalOpen = computed(() => isOpen.value && type.value === 'createChannel')
 
@@ -75,7 +75,7 @@ const onSubmit = form.handleSubmit(async (values) => {
         serverId: data.value.server?.id ?? ''
       })
       if (res?.code === 0) await handleChannels(res2?.data ?? [])
-      refresh()
+      reloadSidebar()
     }
   } catch (error) {
     console.error(error)

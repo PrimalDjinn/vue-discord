@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import ActionTooltip from '@/components/ActionTooltip.vue'
+import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import Alert from '@/components/Alert.vue'
 import { type Server } from '@/service/server'
 import { type Channel } from '@/service/channel'
 import { Hash, Mic, Video, Trash, Edit, LockIcon } from 'lucide-vue-next'
@@ -7,6 +10,7 @@ import { computed, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as channelService from '@/service/channel'
 import { useServerStore } from '@/stores/server'
+import { useReloadStore } from '@/stores/reload'
 
 interface ServerChannelProps {
   channel?: Channel
@@ -14,9 +18,6 @@ interface ServerChannelProps {
   role?: string
   isSectionOpen?: boolean
 }
-import ActionTooltip from '@/components/ActionTooltip.vue'
-import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
-import Alert from '@/components/Alert.vue'
 
 const { handleChannels, resetChannels } = useServerStore()
 
@@ -25,7 +26,7 @@ const props = defineProps<ServerChannelProps>()
 const route = useRoute()
 const router = useRouter()
 const params = computed(() => route.params)
-const refresh: any = inject('reloadServerSidebar')
+const { reloadSidebar } = useReloadStore()
 
 import { useModal } from '@/stores/modal'
 
@@ -41,7 +42,7 @@ const onAction = async () => {
         serverId: props?.server?.id ?? ''
       })
       if (res?.code === 0) await handleChannels(res2?.data ?? [])
-      refresh()
+      reloadSidebar()
       // 避免待在已經刪除的 channel
       router.push(`/server/${props?.server?.id}`)
     }

@@ -18,15 +18,15 @@ import { Button } from '@/components/ui/button'
 import { useModal } from '@/stores/modal'
 import { useServerStore } from '@/stores/server'
 import { clientDB } from '@/stores/indexedDB'
-import { computed, inject, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useReloadStore } from '@/stores/reload'
 
 const { isOpen, type, data } = storeToRefs(useModal())
 const { onClose } = useModal()
 
 const { clearServerCache } = useServerStore()
-
-const refresh: any = inject('reloadNav')
+const { reloadNav } = useReloadStore()
 
 const isModalOpen = computed(() => isOpen.value && type.value === 'editServer')
 
@@ -75,7 +75,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       })
       await clearServerCache()
       handleClose()
-      refresh()
+      reloadNav()
     }
   } catch (error) {
     console.error(error)

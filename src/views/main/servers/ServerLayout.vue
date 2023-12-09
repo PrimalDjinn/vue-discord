@@ -8,6 +8,8 @@ import * as servers from '@/service/server'
 import { useRouter } from 'vue-router'
 import ModalProvider from '@/components/providers/ModalProvider.vue'
 import { useServerStore } from '@/stores/server'
+import { useReloadStore } from '@/stores/reload'
+import { storeToRefs } from 'pinia'
 const { handleServer, resetServer, getServer, getMembers, getChannels } = useServerStore()
 
 const route = useRoute()
@@ -53,15 +55,7 @@ watch(serverId, async () => {
   getServerDetail()
 })
 
-// 重新刷新組件
-const isServerSidebarAlive = ref<boolean>(true)
-const reload = () => {
-  isServerSidebarAlive.value = false
-  nextTick(() => {
-    isServerSidebarAlive.value = true
-  })
-}
-provide('reloadServerSidebar', reload)
+const { isSidebarAlive } = storeToRefs(useReloadStore())
 </script>
 
 <template>
@@ -69,7 +63,7 @@ provide('reloadServerSidebar', reload)
   <PageLoading :isLoading="isLoading" />
   <div class="h-full" v-show="!isLoading">
     <div class="hidden md:flex w-60 z-20 flex-col fixed inset-y-0">
-      <ServerSideBar v-if="isServerSidebarAlive" :serverId="serverId" />
+      <ServerSideBar v-if="isSidebarAlive" :serverId="serverId" />
     </div>
     <main class="h-full md:pl-60 dark:bg-[#313338]">
       <RouterView v-slot="{ Component }">
