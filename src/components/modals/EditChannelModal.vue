@@ -25,11 +25,14 @@ import { Button } from '@/components/ui/button'
 import { useModal } from '@/stores/modal'
 import { computed, inject, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useServerStore } from '@/stores/server'
 
 const { isOpen, type, data } = storeToRefs(useModal())
 const { onClose } = useModal()
 
-const refresh: any = inject('reload')
+const { handleChannels } = useServerStore()
+
+const refresh: any = inject('reloadServerSidebar')
 
 const isModalOpen = computed(() => isOpen.value && type.value === 'editChannel')
 
@@ -64,10 +67,15 @@ const onSubmit = form.handleSubmit(async (values) => {
   try {
     const res = await channelService.update({
       ...values,
-      serverId: data.value.channel?.serverId ?? ''
+      serverId: data.value.channel?.serverId ?? '',
+      id: data.value.channel?.id ?? ''
     })
     if (res?.code === 0) {
       handleClose()
+      const res2 = await channelService.find({
+        serverId: data.value.channel?.serverId ?? ''
+      })
+      if (res?.code === 0) await handleChannels(res2?.data ?? [])
       refresh()
     }
   } catch (error) {

@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { computed, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as channelService from '@/service/channel'
+import { useServerStore } from '@/stores/server'
 
 interface ServerChannelProps {
   channel?: Channel
@@ -17,12 +18,14 @@ import ActionTooltip from '@/components/ActionTooltip.vue'
 import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import Alert from '@/components/Alert.vue'
 
+const { handleChannels, resetChannels } = useServerStore()
+
 const props = defineProps<ServerChannelProps>()
 
 const route = useRoute()
 const router = useRouter()
 const params = computed(() => route.params)
-const refresh: any = inject('reload')
+const refresh: any = inject('reloadServerSidebar')
 
 import { useModal } from '@/stores/modal'
 
@@ -33,6 +36,11 @@ const onAction = async () => {
     if (!props?.channel) return
     const res = await channelService.drop(props?.channel)
     if (res?.code === 0) {
+      await resetChannels(props?.server?.id ?? '')
+      const res2 = await channelService.find({
+        serverId: props?.server?.id ?? ''
+      })
+      if (res?.code === 0) await handleChannels(res2?.data ?? [])
       refresh()
       // 避免待在已經刪除的 channel
       router.push(`/server/${props?.server?.id}`)

@@ -16,7 +16,8 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '../ui/input'
 import { Button } from '@/components/ui/button'
 import { useModal } from '@/stores/modal'
-import { useServerStore, serverDB } from '@/stores/server'
+import { useServerStore } from '@/stores/server'
+import { clientDB } from '@/stores/indexedDB'
 import { computed, inject, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 
@@ -65,7 +66,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
     const res = await server.update(data.value.server)
     if (res?.code === 0) {
-      await serverDB.put('servers', {
+      await clientDB.put('servers', {
         id: data?.value.server.id ?? '',
         profileId: data?.value.server.profileId ?? '',
         name: data?.value.server.name ?? '',

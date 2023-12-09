@@ -140,6 +140,7 @@ const onToggle = async (value: number) => {
           :role="role"
           sectionType="channels"
           channelType="TEXT"
+          :server="server"
           :isSectionOpen="sectionOpen[0]"
         />
         <div className="space-y-[2px]">
@@ -160,6 +161,7 @@ const onToggle = async (value: number) => {
           :role="role"
           sectionType="channels"
           channelType="AUDIO"
+          :server="server"
           :isSectionOpen="sectionOpen[1]"
         />
         <div className="space-y-[2px]">
@@ -180,6 +182,7 @@ const onToggle = async (value: number) => {
           :role="role"
           sectionType="channels"
           channelType="VIDEO"
+          :server="server"
           :isSectionOpen="sectionOpen[2]"
         />
         <div className="space-y-[2px]">

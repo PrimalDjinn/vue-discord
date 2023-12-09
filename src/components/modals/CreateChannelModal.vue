@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
-import * as channel from '@/service/channel'
+import * as channelService from '@/service/channel'
 import { useForm } from 'vee-validate'
 import { VisuallyHidden } from 'radix-vue'
 import {
@@ -25,12 +25,14 @@ import { Button } from '@/components/ui/button'
 import { useModal } from '@/stores/modal'
 import { computed, inject, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useServerStore, serverDB } from '@/stores/server'
+import { useServerStore } from '@/stores/server'
 
 const { isOpen, type, data } = storeToRefs(useModal())
 const { onClose } = useModal()
 
-const refresh: any = inject('reload')
+const { handleChannels } = useServerStore()
+
+const refresh: any = inject('reloadServerSidebar')
 
 const isModalOpen = computed(() => isOpen.value && type.value === 'createChannel')
 
@@ -63,12 +65,16 @@ const form = useForm({
 const isLoading = form.isSubmitting
 const onSubmit = form.handleSubmit(async (values) => {
   try {
-    const res = await channel.create({
+    const res = await channelService.create({
       ...values,
       serverId: data.value.server?.id ?? ''
     })
     if (res?.code === 0) {
       handleClose()
+      const res2 = await channelService.find({
+        serverId: data.value.server?.id ?? ''
+      })
+      if (res?.code === 0) await handleChannels(res2?.data ?? [])
       refresh()
     }
   } catch (error) {

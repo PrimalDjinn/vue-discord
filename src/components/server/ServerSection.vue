@@ -58,7 +58,7 @@ const emit = defineEmits<{
       side="top"
     >
       <button
-        @click="onOpen('createChannel', { channelType: props?.channelType })"
+        @click="onOpen('createChannel', { channelType: props?.channelType, server: props.server })"
         class="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
       >
         <Plus class="h-4 w-4" />

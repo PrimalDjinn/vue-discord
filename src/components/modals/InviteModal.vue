@@ -19,7 +19,7 @@ import { useOrigin } from '@/lib/utils'
 import * as server from '@/service/server'
 import { v4 as uuidv4 } from 'uuid'
 import { useServerStore } from '@/stores/server'
-import { serverDB } from '@/stores/server'
+import { clientDB } from '@/stores/indexedDB'
 
 const { isOpen, type, data } = storeToRefs(useModal())
 const { onOpen, onClose } = useModal()
@@ -50,7 +50,7 @@ const onNew = async () => {
     data.value.server.inviteCode = uuidv4() as string
     const res = await server.update(data?.value.server)
     if (res.code === 0) {
-      await serverDB.put('servers', {
+      await clientDB.put('servers', {
         id: data?.value.server.id ?? '',
         profileId: data?.value.server.profileId ?? '',
         name: data?.value.server.name ?? '',

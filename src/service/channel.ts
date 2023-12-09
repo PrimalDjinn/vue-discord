@@ -1,7 +1,13 @@
-import { post, patch, del, type ApiResult } from '@/service/api'
+import { get, post, patch, del, type ApiResult } from '@/service/api'
 import type { Server } from '@/service/server'
 
-export type Channel = Server & { type: string; serverId: string }
+export type Channel = Server & { type?: string; serverId: string }
+
+// find channels on Server
+export async function find(data?: Channel): Promise<ApiResult<Array<Channel>> | undefined> {
+  const response: ApiResult<Array<Channel>> = await get('/api/v1/channel', data)
+  return response
+}
 
 // create a channel on Server
 export async function create(data?: Channel): Promise<ApiResult<Channel> | undefined> {
