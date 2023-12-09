@@ -2,24 +2,17 @@
 import { ClerkLoaded } from 'vue-clerk'
 import ThemeProvider from '@/components/providers/ThemeProvider.vue'
 import SocketProvider from '@/components/providers/SocketProvider.vue'
-import { nextTick, provide, ref } from 'vue'
+import { useReloadStore } from '@/stores/reload'
+import { storeToRefs } from 'pinia'
 
-// 重新刷新組件
-const isRouterAlive = ref<boolean>(true)
-const reload = () => {
-  isRouterAlive.value = false
-  nextTick(() => {
-    isRouterAlive.value = true
-  })
-}
-provide('reload', reload)
+const { isAllComponentAlive } = storeToRefs(useReloadStore())
 </script>
 
 <template>
   <ClerkLoaded>
     <ThemeProvider>
       <SocketProvider>
-        <RouterView v-if="isRouterAlive" />
+        <RouterView v-if="isAllComponentAlive" />
       </SocketProvider>
     </ThemeProvider>
   </ClerkLoaded>

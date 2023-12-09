@@ -16,13 +16,14 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { Input } from '../ui/input'
 import { Button } from '@/components/ui/button'
 import { useModal } from '@/stores/modal'
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
+import { useReloadStore } from '@/stores/reload'
 import { storeToRefs } from 'pinia'
 
 const { isOpen, type } = storeToRefs(useModal())
 const { onClose } = useModal()
 
-const refresh: any = inject('reload')
+const { reloadAll } = useReloadStore()
 
 const isModalOpen = computed(() => isOpen.value && type.value === 'createServer')
 
@@ -57,7 +58,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     const res = await server.create(values)
     if (res?.code === 0) {
       handleClose()
-      refresh()
+      reloadAll()
     }
   } catch (error) {
     console.error(error)

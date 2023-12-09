@@ -18,10 +18,11 @@ import { useModal } from '@/stores/modal'
 import { useServerStore } from '@/stores/server'
 import type { Server } from '@/service/server'
 import type { Member } from '@/service/member'
+import { useReloadStore } from '@/stores/reload'
 const { getServer, getMembers } = useServerStore()
 
 const { onOpen } = useModal()
-const refresh: any = inject('reload')
+const { reloadAll } = useReloadStore()
 
 interface ServerHeaderProps {
   serverId: string
@@ -46,7 +47,7 @@ const handleLeaveDelete = async () => {
     if (!server.value) return
     // 不是自己的伺服器就離開，是自己的就刪除
     const res = await serverService.drop(server.value)
-    if (res?.code === 0) refresh()
+    if (res?.code === 0) reloadAll()
   } catch (error) {
     console.error(error)
   }

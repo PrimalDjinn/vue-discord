@@ -15,7 +15,7 @@ import {
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '../ui/input'
 import { Button } from '@/components/ui/button'
-import { inject } from 'vue'
+import { useReloadStore } from '@/stores/reload'
 
 interface Props {
   open?: boolean
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<Props>(), {
   open: false
 })
 
-const refresh: any = inject('reload')
+const { reloadAll } = useReloadStore()
 
 // 定義表單規則
 const formSchema = toTypedSchema(
@@ -56,7 +56,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     const res = await server.create(values)
     if (res?.code === 0) {
       form.resetForm()
-      refresh()
+      reloadAll()
     }
   } catch (error) {
     console.error(error)

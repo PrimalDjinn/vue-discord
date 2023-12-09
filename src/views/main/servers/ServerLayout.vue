@@ -7,11 +7,8 @@ import PageLoading from '@/components/PageLoading.vue'
 import * as servers from '@/service/server'
 import { useRouter } from 'vue-router'
 import ModalProvider from '@/components/providers/ModalProvider.vue'
-
 import { useServerStore } from '@/stores/server'
 const { handleServer, resetServer, getServer, getMembers, getChannels } = useServerStore()
-
-const refresh: any = inject('reload')
 
 const route = useRoute()
 const router = useRouter()
@@ -39,7 +36,6 @@ const getServerDetail = async () => {
     res.data.members = res.data?.members ?? []
     await resetServer(sId)
     await handleServer(res?.data)
-    // refresh()
   } catch (error) {
     console.error(error)
   } finally {
