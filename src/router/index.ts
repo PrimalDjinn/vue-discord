@@ -25,7 +25,6 @@ const router = createRouter({
         }
       ]
     },
-    // 守護路由
     {
       path: '/setup',
       name: 'Setup',

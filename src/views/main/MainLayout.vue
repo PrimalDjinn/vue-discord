@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import { useMiddleware } from '@/composables/middlewares'
 import NavigationSidebar from '@/components/navigation/NavigationSidebar.vue'
-import { useAuth } from 'vue-clerk'
 import { useReloadStore } from '@/stores/reload'
 import { storeToRefs } from 'pinia'
 
-// 守護路由
-const { isSignedIn } = useAuth()
-useMiddleware(isSignedIn.value, true)
 
 const { isNavAlive } = storeToRefs(useReloadStore())
 </script>

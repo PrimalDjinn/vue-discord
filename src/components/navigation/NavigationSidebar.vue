@@ -3,7 +3,6 @@ import { onMounted, ref } from 'vue'
 
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { UserButton } from 'vue-clerk'
 
 import NavigationAction from '@/components/navigation/NavigationAction.vue'
 import NavigationItem from '@/components/navigation/NavigationItem.vue'

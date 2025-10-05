@@ -2,14 +2,11 @@
 import { currentProfile } from '@/lib/current-profile'
 import { onMounted, computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useAuth } from 'vue-clerk'
 import { useMiddleware } from '@/composables/middlewares'
 import * as member from '@/service/member'
 import PageLoading from '@/components/PageLoading.vue'
 
-// 守護路由
-const { isSignedIn } = useAuth()
-useMiddleware(isSignedIn.value, false)
+
 
 // TODO 無效邀請
 // TODO 是否加入

@@ -15,7 +15,6 @@ export const useServerStore = defineStore(
 
     const getServers = async (): Promise<Array<Server>> => {
       if (servers.value.length > 0) return servers.value
-      // Setup 會先撈資料，如果 cache 有資料代表不用重新撈
       const temp = await clientDB.getAll('servers')
       servers.value = temp
       return temp

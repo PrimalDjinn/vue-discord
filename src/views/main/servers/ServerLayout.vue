@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { onMounted, computed, watch, ref, inject, nextTick, provide } from 'vue'
+import { onMounted, computed, watch, ref } from 'vue'
 import { currentProfile } from '@/lib/current-profile'
 import ServerSideBar from '@/components/server/ServerSidebar.vue'
 import PageLoading from '@/components/PageLoading.vue'
@@ -22,9 +22,7 @@ const profile = await currentProfile()
 const getServerDetail = async () => {
   try {
     const sId = serverId.value as string
-    // 如果 cache 有資料代表不用重新撈
     const serverCache = await getServer(sId)
-    // 只要有 cache 且 members 和 channels 不為 []
     if (serverCache && (await getMembers(sId)).length > 0 && (await getChannels(sId)).length > 0)
       return
 
